@@ -1,16 +1,25 @@
 library(stringr)
 library(dplyr)
-source("Documents/GitHub/privaR/R/search_state.R")
+source("R/search_state.R")
 
 search_cities_in_states <- function(vec, output) {
-  states <- search_state(vec, "df") #%>% select(StatesString) #%>% tidyr::unnest(cols = c(StatesString))
-  states <- 
-  cities <- read.delim("Documents/GitHub/privaR/data/2015_Gaz_place_national.txt", quote = "\t")[c(1,4)]
-  cities <- 
-  patt <- paste0(states, collapse = "|")
-  cities <- dplyr::tibble(OriginalString = vec,
-                          CitiesYN = stringr::str_detect(string = vec, pattern = patt), 
-                          CitiesString = stringr::str_extract_all(string = vec, pattern = patt))
+  statesY <- search_state(vec, "df") %>% 
+    filter(StatesYN == TRUE) %>% 
+    mutate(ID = seq.int(nrow(.))) %>% 
+    tidyr::unnest() %>% 
+    select(ID, OriginalString, StatesString) %>%
+    mutate(OriginalString = str_replace_all(OriginalString, "\n", ", "),
+           stringsearchbefore = str_extract(OriginalString, 
+                                            pattern = paste0("(?:\\w+\\W*){3}\\b", StatesString)))
+  
+  cityregex <- read.csv("data/cityregex.csv", colClasses = c("character", "character"))
+  statesY <- statesY %>% left_join(cityregex, by = c("StatesString" = "state")) 
+  cities <-  statesY %>% transmute(ID = ID, 
+                                   OriginalString = OriginalString, 
+                                   StatesString = StatesString, 
+                                   CitiesYN = str_detect(string = stringsearchbefore, pattern = pattern),
+                                   CitiesString = str_extract_all(string = stringsearchbefore, pattern = pattern)) 
+  
   
   if (missing(output)||output == "vector") {
     return(cities$CitiesYN)

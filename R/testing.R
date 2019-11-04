@@ -1,6 +1,4 @@
 library(generator)
-
-
 n <- 6
 set.seed(1)
 ashley_madison <- 
@@ -81,7 +79,7 @@ Raleigh, NC 27603",
 "196 E. Green Lake Road
 Birmingham, AL 35209",
 "73 Beechwood Dr.
-La Crosse, WI 54601")
+La Crosse, WI VA DC 54601")
 
 search_streets(fakeaddresses)
 search_streets(fakeaddresses, "df") %>% tidyr::unnest()
@@ -89,5 +87,41 @@ search_streets(fakeaddresses, "df") %>% tidyr::unnest()
 search_zipcode(fakeaddresses)
 
 search_zipcode(fakeaddresses, "df") %>% tidyr::unnest()
+
+search_state(fakeaddresses, "df") %>% select(StatesString) %>% tidyr::unnest() #%>% tidyr::unnest()
+
+
+cities <- read.delim("data/2015_Gaz_place_national.txt", quote = "\t")[c(1,4)]
+cities$NAME <- str_replace_all(cities$NAME, "\\\xf1", "n")
+cities <- cities %>% 
+  filter(USPS != "USPS") %>% 
+  mutate(PlaceType = str_extract_all(NAME, pattern = "CDP|town|city|metropol|munic"), # #CDP = str_extract(NAME, pattern = "CDP"),
+         NAME2 = str_trim(str_remove_all(string = NAME, pattern = "CDP|town|city")))
+
+states <- unique(cities$USPS)
+patt <- vector()
+for (i in 1:length(states)) {
+  city_state_subset <- cities[cities$USPS == states[i], ]
+  patt[i] <- paste0(city_state_subset$NAME2, collapse = "|")
+  patt
+}
+
+cityregex <- dplyr::tibble(state = states, pattern = patt) %>% filter(state != "USPS")
+cityregex
+write.csv(cityregex, "data/cityregex.csv", row.names = F)
+rm(cityregex)
+rm(i)
+cityregex <- read.csv("data/cityregex.csv")
+View(cityregex)
+
+
+search_addresses(fakeaddresses) 
+search_addresses(fakeaddresses, "df") 
+search_addresses(fakeaddresses, "df") %>% tidyr::unnest() 
+search_addresses(fakeaddresses, "df") %>% tidyr::unnest(CitiesString) 
+search_addresses(fakeaddresses, "df") %>% tidyr::unnest(StreetsString) 
+search_cities_in_states(fakeaddresses, "df") %>% tidyr::unnest(CitiesString)
+search_streets(fakeaddresses, "df") %>% tidyr::unnest(StreetsString)
+
 
 
