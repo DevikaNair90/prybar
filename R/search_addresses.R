@@ -25,4 +25,4 @@ search_addresses <- function(vec, output) {
    
 }
 
-
+s
