@@ -113,3 +113,15 @@ rm(cityregex)
 rm(i)
 cityregex <- read.csv("data/cityregex.csv")
 View(cityregex)
+
+
+search_addresses(fakeaddresses) 
+search_addresses(fakeaddresses, "df") 
+search_addresses(fakeaddresses, "df") %>% tidyr::unnest() 
+search_addresses(fakeaddresses, "df") %>% tidyr::unnest(CitiesString) 
+search_addresses(fakeaddresses, "df") %>% tidyr::unnest(StreetsString) 
+search_cities_in_states(fakeaddresses, "df") %>% tidyr::unnest(CitiesString)
+search_streets(fakeaddresses, "df") %>% tidyr::unnest(StreetsString)
+
+
+
