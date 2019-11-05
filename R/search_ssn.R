@@ -3,7 +3,7 @@ library(dplyr)
 
 
 search_SSN <- function(vec, output) {
-  patt <- c("[0-9]{3}( |.|-)?[0-9]{2}( |.|-)?[0-9]{4}")
+  patt <- c("(?<![0-9])[0-9]{3}( |\\.|-)?[0-9]{2}( |\\.|-)?[0-9]{4}(?![0-9])")
   #patt <- paste(patt, collapse = "|")
   ssn <- dplyr::tibble(OriginalString = vec,
                          SSNYN = stringr::str_detect(string = vec, pattern = patt), 

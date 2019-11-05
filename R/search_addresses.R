@@ -3,13 +3,24 @@ library(stringr)
 
 source("R/search_cities.R")
 source("R/search_streets.R")
+source("R/search_zipcode.R")
 
 search_addresses <- function(vec, output) {
   cities <- search_cities_in_states(vec, "df")
   streets <- search_streets(vec, "df") 
-  addresses <- inner_join(cities, streets, by = c("ID", "OriginalString")) %>% 
-    mutate(AddressYN = ifelse(CitiesYN == TRUE & StreetsYN == TRUE, TRUE, FALSE)) #,
-           #AddressString = ifelse(AddressYN == TRUE, c(tidyr::unnest(CitiesString), tidyr::unnest(StreetsString))))
+  zipcodes <- search_zipcode(vec, "df")
+  
+  if (any(streets$StreetsYN)) {
+    addresses <-streets %>% 
+      full_join(cities, by = c("ID", "OriginalString")) %>% 
+      full_join(zipcodes, by = c("ID", "OriginalString")) %>%
+      mutate(AddressYN = ifelse(StreetsYN == TRUE & (CitiesYN == TRUE|ZipCodeYN == TRUE), TRUE, FALSE)) 
+  }
+  else {
+    addresses <-  dplyr::tibble(OriginalString = vec, 
+                             AddressYN = FALSE,
+                             AddressString = NA)
+  }
   
   if (missing(output)||output == "vector") {
     return(addresses$AddressYN)
@@ -22,7 +33,9 @@ search_addresses <- function(vec, output) {
   else {
     print("Output argument invalid.")
   }
-   
+  
 }
 
-s
+
+# account for PO box, account for zipcode
+
