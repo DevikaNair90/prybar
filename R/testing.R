@@ -123,5 +123,8 @@ search_addresses(fakeaddresses, "df") %>% tidyr::unnest(StreetsString)
 search_cities_in_states(fakeaddresses, "df") %>% tidyr::unnest(CitiesString)
 search_streets(fakeaddresses, "df") %>% tidyr::unnest(StreetsString)
 
-
+ashley_madison[search_DOB(ashley_madison$dob) == TRUE,] %>% nrow()
+fakeaddresses[search_addresses(fakeaddresses) == TRUE] 
+fakeaddresses[search_cities_in_states(fakeaddresses) == TRUE] 
+fakeaddresses[search_streets(fakeaddresses) == TRUE] 
 

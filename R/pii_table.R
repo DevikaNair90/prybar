@@ -4,7 +4,6 @@ library(stringr)
 setwd("Documents/GitHub/privaR/")
 
 source("R/search_addresses.R")
-source("R/search_zipcode.R")
 source("R/search_dob.R")
 source("R/search_email.R")
 source("R/search_phone.R")

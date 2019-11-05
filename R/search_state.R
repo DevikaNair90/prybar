@@ -5,9 +5,9 @@ search_state <- function(vec, output) {
   states <- read.csv("data/state_abbrevs.csv")
   states <- paste(states$State, states$Abbreviation, sep = "|")
   patt <- paste0(states, collapse = "|")
-  states <- dplyr::tibble(OriginalString = vec,
-                           StatesYN = stringr::str_detect(string = vec, pattern = patt), 
-                          StatesString = stringr::str_extract_all(string = vec, pattern = patt))
+  states <- dplyr::tibble(OriginalString = str_replace_all(vec, "\n", ", "),
+                           StatesYN = stringr::str_detect(string = OriginalString, pattern = patt), 
+                          StatesString = stringr::str_extract_all(string = OriginalString, pattern = patt))
   
   if (missing(output)||output == "vector") {
     return(states$StatesYN)
