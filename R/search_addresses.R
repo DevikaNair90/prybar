@@ -42,7 +42,7 @@
 # source("R/search_cities.R")
 # source("R/search_streets.R")
 # source("R/search_zipcode.R")
-devtools::load_all()
+#devtools::load_all()
 search_addresses <- function(vec, output) {
   cities <- search_cities_in_states(vec, "df")
   streets <- search_streets(vec, "df") 

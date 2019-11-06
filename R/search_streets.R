@@ -36,7 +36,7 @@
 #' 
 
 search_streets <- function(vec, output) {
-  #streets <- read.csv("data/street_abbrevs_usa.csv")
+  streets <- privaR:::streetabbrevsusa
   streets <- paste(streets$StreetType, streets$Abbrev, streets$Abbrev2, sep = "|")
   patt <- paste0("\\d+.*", "(", streets, ")", collapse = "|")
   streets <- dplyr::tibble(ID = seq.int(length(vec)),

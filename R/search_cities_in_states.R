@@ -50,7 +50,7 @@ search_cities_in_states <- function(vec, output) {
              stringsearchbefore = str_extract(OriginalString,
                                               pattern = paste0("(?:\\w+\\W*){3}\\b", StatesString)))
     
-    cityregex <- read.csv("data/cityregex.csv", colClasses = c("character", "character"))
+    cityregex <- privaR:::cityregex
     statesY <- statesY %>% left_join(cityregex, by = c("StatesString" = "state"))
     cities <-  statesY %>% transmute(ID = ID,
                                      OriginalString = OriginalString,
