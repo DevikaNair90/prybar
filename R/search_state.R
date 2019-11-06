@@ -35,7 +35,8 @@
 
 
 search_state <- function(vec, output) {
-  #states <- read.csv("data/state_abbrevs.csv")
+  load("R/sysdata.rda")
+  states <- state_abbrevs #read.csv("data/state_abbrevs.csv")
   states <- paste(states$State, states$Abbreviation, sep = "|")
   patt <- paste0(states, collapse = "|")
   states <- dplyr::tibble(OriginalString = str_replace_all(vec, "\n", ", "),

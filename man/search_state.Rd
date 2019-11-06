@@ -38,6 +38,6 @@ Toms River, NJ 08753",
                    "73 Beechwood Dr.
                    La Crosse, WI VA DC 54601")
 
-search_state(testcase)
+search_state(fakeaddresses)
 
 }

@@ -128,3 +128,11 @@ fakeaddresses[search_addresses(fakeaddresses) == TRUE]
 fakeaddresses[search_cities_in_states(fakeaddresses) == TRUE] 
 fakeaddresses[search_streets(fakeaddresses) == TRUE] 
 
+cityregex <- read.csv("privaR/data/cityregex.csv")
+countrycodes <- read.csv("privaR/data/country_codes.csv")
+stateabbrevs <- read.csv("privaR/data/state_abbrevs.csv")
+streetabbrevsusa <- read.csv("privaR/data/street_abbrevs_usa.csv")
+streetabbrevs <- read.csv("privaR/data/street_abbrevs.csv")
+
+save(cityregex, countrycodes, stateabbrevs, streetabbrevs, streetabbrevsusa, file = "privaR/R/sysdata.rda")
+load("privaR/R/sysdata.rda")
