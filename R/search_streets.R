@@ -32,11 +32,11 @@
 #'                    "73 Beechwood Dr.
 #'                    La Crosse, WI VA DC 54601")
 #' 
-#' search_streets(testcase)
+#' search_streets(fakeaddresses)
 #' 
 
 search_streets <- function(vec, output) {
-  streets <- read.csv("data/street_abbrevs_usa.csv")
+  #streets <- read.csv("data/street_abbrevs_usa.csv")
   streets <- paste(streets$StreetType, streets$Abbrev, streets$Abbrev2, sep = "|")
   patt <- paste0("\\d+.*", "(", streets, ")", collapse = "|")
   streets <- dplyr::tibble(ID = seq.int(length(vec)),

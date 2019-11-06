@@ -30,12 +30,12 @@
 #'                    "73 Beechwood Dr.
 #'                    La Crosse, WI VA DC 54601")
 #' 
-#' search_state(testcase)
+#' search_state(fakeaddresses)
 #' 
 
 
 search_state <- function(vec, output) {
-  states <- read.csv("data/state_abbrevs.csv")
+  #states <- read.csv("data/state_abbrevs.csv")
   states <- paste(states$State, states$Abbreviation, sep = "|")
   patt <- paste0(states, collapse = "|")
   states <- dplyr::tibble(OriginalString = str_replace_all(vec, "\n", ", "),

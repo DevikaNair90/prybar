@@ -35,7 +35,7 @@
 #'                    "73 Beechwood Dr.
 #'                    La Crosse, WI VA DC 54601")
 #' 
-#' search_addresses(testcase)
+#' search_addresses(fakeaddresses)
 #' 
 
 

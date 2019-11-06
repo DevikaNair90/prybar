@@ -31,7 +31,7 @@
 #'                    "73 Beechwood Dr.
 #'                    La Crosse, WI VA DC 54601")
 #' 
-#' search_zipcode(testcase)
+#' search_zipcode(fakeaddresses)
 #' 
 
 search_zipcode <- function(vec, output) {
