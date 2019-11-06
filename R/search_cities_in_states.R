@@ -8,7 +8,7 @@
 #' 
 #' The default output is a TRUE/FALSE vector but the function can also
 #' return a dataframe of the original vector input, the TRUE/FALSE result, 
-#' and the substring that matched the zipcode pattern. 
+#' and the substring that matched the city/state pattern. 
 #'
 #' @param vec A vector input whose contents need to be searched for references
 #' to city names

@@ -10,20 +10,23 @@
 #' @suggest generator::
 #' @export
 #' @examples
-#' testcase <- data.frame(name = generator::r_full_names(n),  
-#' snn = generator::r_national_identification_numbers(n), 
-#' dob = generator::r_date_of_births(n), 
-#' email = generator::r_email_addresses(n), 
-#' ip = generator::r_ipv4_addresses(n), 
-#' phone = generator::r_phone_numbers(n),  
-#' credit_card = generator::r_credit_card_numbers(n), 
-#' lat = generator::r_latitudes(n), 
-#' lon = generator::r_longitudes(n), 
+#' set.seed(2)
+#' testcase <- data.frame(name = generator::r_full_names(2),  
+#' snn = generator::r_national_identification_numbers(2), 
+#' dob = generator::r_date_of_births(2), 
+#' email = generator::r_email_addresses(2), 
+#' ip = generator::r_ipv4_addresses(2), 
+#' phone = generator::r_phone_numbers(2),  
+#' credit_card = generator::r_credit_card_numbers(2), 
+#' lat = generator::r_latitudes(2), 
+#' lon = generator::r_longitudes(2), 
 #' stringsAsFactors = FALSE)
 #' 
-devtools::load_all()
-#devtools::use_package(package = "stringr", type = )
-#devtools::use_package
+#' pii_table(testcase)
+#' 
+# devtools::load_all()
+# devtools::use_package(package = "stringr", type = "import")
+# devtools::use_package(package = "dplyr", type = "import")
 
 pii_table <- function(df) {
   df <- as.data.frame(df)
