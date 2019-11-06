@@ -1,0 +1,23 @@
+Type: Package
+Package: privaR
+Title: Toolkit for Identifying Hidden PII in Text Data
+Version: 0.0
+Authors@R: c(
+    person("Devika", "Mahoney-Nair", , "devikamahoneynair@gmail.com", c("aut", "cre"), comment = c(ORCID = "0000-0002-7044-9028"))
+    )
+Description: A toolkit for finding personally identifying information in text data. 
+License: MIT + file LICENSE
+URL: https://github.com/DevikaNair90/privaR
+BugReports: https://github.com/DevikaNair90/privaR/issues
+Depends: 
+    #R (>= 3.2.0)
+Imports: 
+    dplyr
+    stringr
+Suggests: 
+LinkingTo: 
+VignetteBuilder: knitr
+Encoding: UTF-8
+#LazyData: yes
+#Roxygen: list(markdown = TRUE, roclets = c("rd", "namespace", "collate"))
+#RoxygenNote: 6.1.1
