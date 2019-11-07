@@ -51,11 +51,13 @@ search_cities_in_states <- function(vec, output) {
                                               pattern = paste0("(?:\\w+\\W*){3}\\b", StatesString)))
     
     cityregex <- privaR:::cityregex
+    cityregex$state <- as.character(cityregex$state)
+    cityregex$pattern <- as.character(cityregex$pattern)
     statesY <- statesY %>% left_join(cityregex, by = c("StatesString" = "state"))
     cities <-  statesY %>% transmute(ID = ID,
                                      OriginalString = OriginalString,
                                      StatesString = StatesString,
-                                     CitiesYN = str_detect(string = stringsearchbefore, pattern = pattern),
+                                     CitiesYN = str_detect(string = stringsearchbefore, pattern = (pattern)),
                                      CitiesString = str_extract_all(string = stringsearchbefore, pattern = pattern)) 
   }
   else {cities <-  dplyr::tibble(OriginalString = vec, 
