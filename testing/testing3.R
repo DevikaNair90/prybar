@@ -2,20 +2,7 @@ library(RPostgreSQL)
 library(maditr)
 library(dplyr)
 library(stringr)
-Sys.setenv(db_userid = "dtn2ep")
-#remotes::install_github("dads2busy/dataplumbr")
 
-conn <-dbConnect(drv=PostgreSQL(),
-                 dbname="sdad_data",
-                 host="sdad.policy-analytics.net",
-                 port = 5436, #postgis_1 5436 - postgis_2
-                 user=Sys.getenv("db_userid"),
-                 password=Sys.getenv("db_userid"))
-
-va_personal = dbReadTable(conn = conn,name = c("bgt", "va_res_pers"))
-
-#va_personal_pii2 <- pii_table(va_personal)
-#va_personal_pii2
 
 source("R/search_addresses.R")
 source("R/search_dob.R")
@@ -53,9 +40,9 @@ for (i in 1:ncol(va_personal)) {
   # columnsummary$ZipCodeYN[i] <- any(va_personal_zipcode[[i]]$ZipCodeYN)
   # columnsummary$ZipCodeCount[i] <- sum(va_personal_zipcode[[i]]$ZipCodeYN, na.rm = TRUE)
   
-  va_personal_address[[i]] <- search_addresses(va_personal[,i], "df")
-  columnsummary$AddressYN[i] <- any(va_personal_address[[i]]$AddressYN)
-  columnsummary$AddressCount[i] <- sum(va_personal_address[[i]]$AddressYN, na.rm = TRUE)
+  # va_personal_address[[i]] <- search_addresses(va_personal[,i], "df")
+  # columnsummary$AddressYN[i] <- any(va_personal_address[[i]]$AddressYN)
+  # columnsummary$AddressCount[i] <- sum(va_personal_address[[i]]$AddressYN, na.rm = TRUE)
 }
 
 columnsummary

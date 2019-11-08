@@ -36,8 +36,12 @@
 
 search_state <- function(vec, output) {
   states <- privaR:::stateabbrevs
-  states <- paste(states$State, states$Abbreviation, sep = "|")
-  patt <- paste0(states, collapse = "|")
+  nostartingletters <- "(?<![:alpha:])"
+  noendingletters <-  "(?![:alpha:])"
+  patt <- paste0(paste0(nostartingletters, states$State, noendingletters, collapse = "|"),
+                   paste0(nostartingletters, states$Abbreviation, noendingletters, collapse = "|"), 
+                   collapse = "|")
+  
   states <- dplyr::tibble(OriginalString = str_replace_all(vec, "\n", ", "),
                            StatesYN = stringr::str_detect(string = OriginalString, pattern = patt), 
                           StatesString = stringr::str_extract_all(string = OriginalString, pattern = patt))

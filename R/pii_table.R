@@ -7,7 +7,7 @@
 #' @param df A dataframe with (vector-able) variables.
 #' @import stringr
 #' @import dplyr
-#' @suggest generator::
+#' @suggest generator
 #' @export
 #' @examples
 #' set.seed(2)

@@ -40,7 +40,7 @@
 search_cities_in_states <- function(vec, output) {
   states <- search_state(vec, "df") 
   
-  if (any(states$StatesYN)) {
+  if (any(states$StatesYN, na.rm = TRUE)) {
     statesY <- states %>%
       filter(StatesYN == TRUE) %>% 
       mutate(ID = seq.int(nrow(.))) %>%
