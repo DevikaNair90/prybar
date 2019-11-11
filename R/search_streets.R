@@ -36,21 +36,69 @@
 #' 
 
 search_streets <- function(vec, output) {
-  streets <- privaR:::streetabbrevsusa
-  streets <- paste(streets$StreetType, streets$Abbrev, streets$Abbrev2, sep = "|")
-  patt <- paste0("\\d+.*", "(", streets, ")", collapse = "|")
+  pattdigits <- "[0-9]"
+  # pattern to match digits
+  streetspatt <- privaR:::streetabbrevsusa 
+  # pull street and street names
+  streetspatt <- paste(streetspatt$StreetType, streetspatt$Abbrev, streetspatt$Abbrev2, sep = "|")
+  streetspatt <- paste0(streetspatt, collapse = "|")
+  # pattern to find street names 
+  
+  threepriorwhitespacespatt <- paste0("(?:\\w+\\W*){3}\\b(", streetspatt, ")", collapse = "|") 
+  digitswspacewroadname <- paste0("\\d(\\W*).*(?<=(", streetspatt, "))") #patt_test2
+  # pattern to find street addresses
+  
+  
   streets <- dplyr::tibble(ID = seq.int(length(vec)),
-                           OriginalString = str_replace_all(vec, "\n", ", "),
-                          StreetsYN = stringr::str_detect(string = OriginalString, pattern = patt), 
-                          StreetsString = stringr::str_extract_all(string = OriginalString, pattern = patt))
+                           OriginalString = vec, #gsub(x = vec, pattern = "\\\n", replacement = ", "),
+                           StreetMention =  ifelse(grepl(OriginalString, pattern = pattdigits) == TRUE, 
+                                                   grepl(OriginalString, 
+                                                         pattern = threepriorwhitespacespatt), FALSE)
+                           )
+  
+  
+  
+  streets_T <- streets %>% 
+    filter(StreetMention == TRUE) %>% 
+    mutate(StreetsString = list(character()),
+           StreetType = list(character()))
+  
+  findstreets <- gregexpr(text = streets_T$OriginalString, pattern =  threepriorwhitespacespatt, perl = TRUE)
+  StreetsString =  regmatches(x = streets_T$OriginalString, m = findstreets, invert = FALSE)
+  
+  if (length(StreetsString) > 0 & length(StreetsString) == nrow(streets_T)) {
+    for (i in 1:length(StreetsString)) {
+      streets_T$StreetsString[[i]] <- StreetsString[[i]]
+      streets_T$StreetType[[i]] <- str_extract_all(streets_T$StreetsString[[i]], pattern = streetspatt)
+    }
+  }
+  
+  streets_T2 <- streets_T %>% 
+    tidyr::unnest() %>% tidyr::unnest()  %>% 
+    transmute(ID, patta = paste0("\\d(\\W*).*(?<=(", StreetType, "))"), 
+              Address = str_extract(string = StreetsString, pattern = patta)) %>% 
+    filter(!is.na(Address) & nchar(Address) > 2) %>% select(ID, Address)
+  
+  streets_T <- streets_T %>% 
+    select(ID, OriginalString, StreetMention) %>% 
+    left_join(streets_T2, by = "ID") 
+  
+  streets_F <- streets %>% 
+    filter(StreetMention == FALSE) %>% 
+    mutate(Address = list(character()))
+  
+  streets <- rbind(streets_F, streets_T) %>% arrange(ID) 
+  
   
   if (missing(output)||output == "vector") {
-    return(streets$StreetsYN)
+    return(streets$StreetMention)
   }
+  
   
   else if (output == "df") {
     return(streets)
   }
+  
   
   else {
     print("Output argument invalid.")
