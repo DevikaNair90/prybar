@@ -1,12 +1,14 @@
 
 setwd("~/Documents/git_dn90/")
 devtools::install("privaR")
+library(privaR)
+
 devtools::document("privaR")
 setwd("~/Documents/git_dn90/privaR/")
 library(devtools)
 use_data(cityregex, countrycodes, stateabbrevs, streetabbrevs, streetabbrevsusa, 
          internal = TRUE, overwrite = TRUE)
-library(privaR)
+
 
 ?search_state
 ?search_addresses()
@@ -31,3 +33,22 @@ search_email(fakeaddresses)
 search_email(fakeaddresses, "df")
 search_state(fakeaddresses)
 search_cities_in_states(fakeaddresses)
+
+search_streets(fakeaddresses)
+search_streets(fakeaddresses, "df")
+search_streets(head(va_personal$cityname, 100), "df")
+a[a$StreetMention == TRUE,] %>% tidyr::unnest() %>% View()
+
+
+b <- privaR::pii_table(va_personal, "~/Desktop/testfolder/")
+
+ssn_results <- readRDS("~/Desktop/testfolder/va_personal_PII_2_SSN_2019-11-13.RDS")
+
+ssn_result_msa <- ssn_results[4]
+c_ssn <- pii_table(va_personal, "~/Desktop/testfolder/")
+ssn_results2 <- readRDS("~/Desktop/testfolder/va_personal_PII_2_SSN_2019-11-13.RDS")
+ssn_results2
+
+d <- privaR::pii_table(va_personal, "~/Desktop/testfolder/")
+
+e <- privaR::pii_geo_table(va_personal, "~/Desktop/testfolder/")

@@ -2,17 +2,16 @@
 % Please edit documentation in R/pii_table.R
 \name{pii_table}
 \alias{pii_table}
-\title{Creates a summary table of PII for a datset.}
+\title{Creates a summary table of PII for a dataset.}
 \usage{
-pii_table(df)
+pii_table(df, path)
 }
 \arguments{
 \item{df}{A dataframe with (vector-able) variables.}
 }
 \description{
 This function takes a dataframe and searches each column for presence of 
-any text that appears as PII: emails, DOB, SSNs, phone numbers, and 
-addresses (street address, city/states, zipcodes).
+any text that appears as PII: emails, DOB, SSNs, and phone numbers.
 }
 \examples{
 set.seed(2)
