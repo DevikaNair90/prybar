@@ -36,7 +36,7 @@
 #' 
 
 search_streets <- function(vec, output) {
-  pattdigits <- "[0-9]"
+  pattdigits <- "\\d"
   # pattern to match digits
   streetspatt <- privaR:::streetabbrevsusa 
   # pull street and street names
@@ -73,8 +73,11 @@ search_streets <- function(vec, output) {
     }
   }
   
-  streets_T2 <- streets_T %>% 
-    tidyr::unnest() %>% tidyr::unnest()  %>% 
+  streets_T <- streets_T %>% 
+    tidyr::unnest() %>% tidyr::unnest()  
+  
+  if(nrow(streets_T) > 0) {
+  streets_T2 <- streets_T %>%  
     transmute(ID, patta = paste0("\\d(\\W*).*(?<=(", StreetType, "))"), 
               Address = str_extract(string = StreetsString, pattern = patta)) %>% 
     filter(!is.na(Address) & nchar(Address) > 2) %>% select(ID, Address)
@@ -88,6 +91,17 @@ search_streets <- function(vec, output) {
     mutate(Address = list(character()))
   
   streets <- rbind(streets_F, streets_T) %>% arrange(ID) 
+  }
+  
+  else if(nrow(streets_T) == 0) {
+    streets_F <- streets %>% 
+      filter(StreetMention == FALSE) %>% 
+      mutate(Address = list(character()))
+    
+    streets <- streets_F
+  }
+  
+  
   
   
   if (missing(output)||output == "vector") {

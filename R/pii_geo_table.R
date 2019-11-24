@@ -28,7 +28,7 @@
 # devtools::use_package(package = "stringr", type = "import")
 # devtools::use_package(package = "dplyr", type = "import")
 
-pii_geo_table <- function(df, path) {
+pii_geo_table <- function(df, path, writeout) {
   print(Sys.time())
   df_name <- deparse(substitute(df))
   df <- as.data.frame(df)
@@ -54,29 +54,76 @@ pii_geo_table <- function(df, path) {
   df_city <- list(data.frame())
   df_zipcode <- list(data.frame())
   df_street <- list(data.frame())
-  #df_zipcode <- list(data.frame())
+  
+  # STATES #####################################################################################
   
   for (i in 1:ncol(df)) {
     var <- as.character(df[,i])
     df_state[[i]] <- search_state(var, "df")
-    df_city[[i]] <- search_cities_in_states(var, "df")
-    df_zipcode[[i]] <- search_zipcode(var, "df")
-    df_street[[i]] <- search_streets(var, "df")
-    # df_zipcode[[i]] <- search_zipcode(var, "df")
     class_table$staterisk[i] <- sum(df_state[[i]]$StatesYN, na.rm = TRUE)
-    class_table$cityrisk[i] <- sum(df_city[[i]]$CitiesYN, na.rm = TRUE)
-    class_table$zipcoderisk[i] <- sum(df_zipcode[[i]]$ZipCodeYN, na.rm = TRUE)
-    class_table$streetrisk[i] <- sum(df_street[[i]]$StreetMention, na.rm = TRUE)
-    
   }
   
-  saveRDS(object = class_table, file = paste0(path, df_name, "_PII_0_Summary_", Sys.Date(), ".RDS")) 
+  if (missing(writeout)||writeout == TRUE) {
+    saveRDS(object = df_state, file = paste0(path, df_name, "_PII_1_STATES_", Sys.Date(), ".RDS"))
+  }
   
-  saveRDS(object = df_state, file = paste0(path, df_name, "_PII_1_STATES_", Sys.Date(), ".RDS"))
-  saveRDS(object = df_city, file = paste0(path, df_name, "_PII_2_CITIES_", Sys.Date(), ".RDS"))
-  saveRDS(object = df_zipcode, file = paste0(path, df_name, "_PII_3_ZIPCODES_", Sys.Date(), ".RDS"))
-  saveRDS(object = df_street, file = paste0(path, df_name, "_PII_4_STREETS_", Sys.Date(), ".RDS"))
+  rm(df_state)
+  print("states completed")
+  print(Sys.time())
   
+  # CITIES #####################################################################################
+  
+  for (i in 1:ncol(df)) {
+    var <- as.character(df[,i])
+    df_city[[i]] <- search_cities_in_states(var, "df")
+    class_table$cityrisk[i] <- sum(df_city[[i]]$CitiesYN, na.rm = TRUE)
+  }
+  
+  if (missing(writeout)||writeout == TRUE) {
+    saveRDS(object = df_city, file = paste0(path, df_name, "_PII_2_CITIES_", Sys.Date(), ".RDS"))
+  }
+  
+  rm(df_city)
+  print("cities completed")
+  print(Sys.time())
+  
+  # ZIPCODES #####################################################################################
+  
+  for (i in 1:ncol(df)) {
+    var <- as.character(df[,i])
+    df_zipcode[[i]] <- search_zipcode(var, "df")
+    class_table$zipcoderisk[i] <- sum(df_zipcode[[i]]$ZipCodeYN, na.rm = TRUE)
+  }
+  
+  if (missing(writeout)||writeout == TRUE) {
+    saveRDS(object = df_zipcode, file = paste0(path, df_name, "_PII_3_ZIPCODES_", Sys.Date(), ".RDS"))
+  }
+  
+  rm(df_zipcode)
+  print("zipcodes completed")
+  print(Sys.time())
+  
+  # STREET #####################################################################################
+  
+  # for (i in 1:ncol(df)) {
+  #   var <- as.character(df[,i])
+  #   df_street[[i]] <- search_streets(var, "df")
+  #   class_table$streetrisk[i] <- sum(df_street[[i]]$StreetMention, na.rm = TRUE)
+  # }
+  # 
+  # if (missing(writeout)||writeout == TRUE) {
+  #   saveRDS(object = df_street, file = paste0(path, df_name, "_PII_4_STREETS_", Sys.Date(), ".RDS"))
+  # }
+  # 
+  # rm(df_street)
+  # print("streets completed")
+  # print(Sys.time())
+  # 
+  if (missing(writeout)||writeout == TRUE) {
+  saveRDS(object = class_table, file = paste0(path, df_name, "_PII_0_Summary_", Sys.Date(), ".RDS"))
+  }
+
+  print("summary completed")
   print(Sys.time())
   
   class_table

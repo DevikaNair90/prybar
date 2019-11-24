@@ -51,4 +51,26 @@ ssn_results2
 
 d <- privaR::pii_table(va_personal, "~/Desktop/testfolder/")
 
-e <- privaR::pii_geo_table(va_personal, "~/Desktop/testfolder/")
+
+
+privaR::pii_geo_table(fakeaddresses, "~/Desktop/testfolder/New Folder With Items/")
+
+fakeaddressessummary <- readRDS("~/Desktop/testfolder/New Folder With Items/fakeaddresses_PII_0_Summary_2019-11-13.RDS")
+fakeaddressesstates <- readRDS("~/Desktop/testfolder/New Folder With Items/fakeaddresses_PII_1_STATES_2019-11-13.RDS")
+fakeaddressescities <- readRDS("~/Desktop/testfolder/New Folder With Items/fakeaddresses_PII_2_CITIES_2019-11-13.RDS")
+fakeaddresseszipcodes <- readRDS("~/Desktop/testfolder/New Folder With Items/fakeaddresses_PII_3_ZIPCODES_2019-11-13.RDS")
+fakeaddressesstreets <- readRDS("~/Desktop/testfolder/New Folder With Items/fakeaddresses_PII_4_STREETS_2019-11-13.RDS")
+
+vec <- va_personal[1:20,]$bgtresid
+
+search_streets(vec, "df")
+
+e <- privaR::search_addresses(va_personal$cityname, "df")
+e <- privaR::pii_geo_table(fakeaddresses, path = "~/Desktop/testfolder/Nov13_2/") 
+e <- privaR::pii_geo_table(va_personal, path = "~/Desktop/testfolder/Nov13_2/") 
+f <- privaR::pii_geo_table(va_personal, writeout = FALSE) 
+  #privaR::pii_geo_table(va_personal, path = "~/Desktop/testfolder/Nov13_2/") 
+f <- privaR::search_streets(va_personal$bgtresid, "df")
+g <- privaR::search_streets(va_personal$statename)
+h <- privaR::search_streets(va_personal$cityname, "df")
+h
