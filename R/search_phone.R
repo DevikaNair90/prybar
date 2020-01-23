@@ -42,9 +42,18 @@ search_phone <- function(vec, output) {
             # Denmark 4 4 
             "Tel", "Phone", "Cell", "Mobile", "Fax")
   patt <- paste(patt, collapse = "|")
+  
+  phone <- as.data.frame(cbind(OriginalString = vec, 
+                               PhoneString =  regmatches(vec , m = gregexpr(vec, pattern = patt )),
+                               PhoneYN = ))
+  
   phone <- dplyr::tibble(OriginalString = vec,
                          PhoneYN = stringr::str_detect(string = vec, pattern = patt), 
-                         PhoneString = stringr::str_extract_all(string = vec, pattern = patt))
+                         PhoneString = stringr::str_extract_all(string = vec, pattern = patt),
+                         PhoneUS = )
+  
+  areacodes <-read.csv("https://raw.githubusercontent.com/ravisorg/Area-Code-Geolocation-Database/master/us-area-code-cities.csv", header=F)
+  
   
   if (missing(output)||output == "vector") {
     return(phone$PhoneYN)

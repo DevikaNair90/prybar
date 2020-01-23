@@ -5,11 +5,12 @@ library(prybar)
 
 devtools::document("prybar")
 setwd("~/Documents/git_dn90/prybar")
+setwd("~/Documents/GitHub/prybar/")
 library(devtools)
 use_data(cityregex, countrycodes, stateabbrevs, streetabbrevs, streetabbrevsusa, 
          internal = TRUE, overwrite = TRUE)
 
-install.packages("changer")
+#install.packages("changer")
 
 content <- letters
 package.skeleton("privaR", path = tempdir())
@@ -48,6 +49,8 @@ search_cities_in_states(fakeaddresses)
 search_streets(fakeaddresses)
 search_streets(fakeaddresses, "df")
 search_streets(head(va_personal$cityname, 100), "df")
+
+
 a[a$StreetMention == TRUE,] %>% tidyr::unnest() %>% View()
 
 

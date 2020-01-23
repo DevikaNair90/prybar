@@ -43,8 +43,8 @@ search_state <- function(vec, output) {
                    paste0(nostartingletters, states$Abbreviation, noendingletters, collapse = "|"), 
                    collapse = "|")
   
-  states <- data.table(OriginalString = str_replace_all(vec, "\n", ", ")) %>% 
-                         dt_mutate(
+  states <- data.table::data.table(OriginalString = str_replace_all(vec, "\n", ", "))  %>% 
+                         maditr::dt_mutate(
                            StatesYN = stringr::str_detect(string = OriginalString, pattern = patt), 
                           StatesString = stringr::str_extract_all(string = OriginalString, pattern = patt)) 
   

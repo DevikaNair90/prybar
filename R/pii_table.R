@@ -27,7 +27,7 @@
 # devtools::use_package(package = "stringr", type = "import")
 # devtools::use_package(package = "dplyr", type = "import")
 
-pii_table <- function(df, path) {
+pii_table <- function(df, path, writeout) {
   df_name <- deparse(substitute(df))
   df <- as.data.frame(df)
   class_table <- data.frame("Column" = colnames(df)) %>%
@@ -68,14 +68,19 @@ pii_table <- function(df, path) {
     
   }
   
-  saveRDS(object = class_table, file = paste0(path, df_name, "_PII_0_Summary_", Sys.Date(), ".RDS")) 
+  if (missing(writeout)||writeout == TRUE) {
+    saveRDS(object = class_table, file = paste0(path, df_name, "_PII_0_Summary_", Sys.Date(), ".RDS")) 
+    
+    saveRDS(object = df_dob, file = paste0(path, df_name, "_PII_1_DOB_", Sys.Date(), ".RDS"))
+    saveRDS(object = df_ssn, file = paste0(path, df_name, "_PII_2_SSN_", Sys.Date(), ".RDS"))
+    saveRDS(object = df_email, file = paste0(path, df_name, "_PII_3_EMAIL_", Sys.Date(), ".RDS"))
+    saveRDS(object = df_phone, file = paste0(path, df_name, "_PII_4_PHONE_", Sys.Date(), ".RDS"))
+  }
   
-  saveRDS(object = df_dob, file = paste0(path, df_name, "_PII_1_DOB_", Sys.Date(), ".RDS"))
-  saveRDS(object = df_ssn, file = paste0(path, df_name, "_PII_2_SSN_", Sys.Date(), ".RDS"))
-  saveRDS(object = df_email, file = paste0(path, df_name, "_PII_3_EMAIL_", Sys.Date(), ".RDS"))
-  saveRDS(object = df_phone, file = paste0(path, df_name, "_PII_4_PHONE_", Sys.Date(), ".RDS"))
+  print("summary completed")
+  print(Sys.time())
   
-  class_table
+  print(class_table)
   
 }
 

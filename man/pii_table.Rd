@@ -4,7 +4,7 @@
 \alias{pii_table}
 \title{Creates a summary table of PII for a dataset.}
 \usage{
-pii_table(df, path)
+pii_table(df, path, writeout)
 }
 \arguments{
 \item{df}{A dataframe with (vector-able) variables.}
