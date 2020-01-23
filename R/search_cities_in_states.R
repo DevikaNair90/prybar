@@ -13,10 +13,12 @@
 #' @param vec A vector input whose contents need to be searched for references
 #' to city names
 #' @param output The desired output of function. Defaults to "vector" where T/F 
-#' vector result is returned. The argument "df" will output a table of original 
+#' vector result is returned. The argument "dt" will output a table of original 
 #' vector input, T/F vector result, and the matching substring. 
 #' @import stringr
 #' @import dplyr
+#' @import data.table
+#' @import maditr
 #' @export
 #' @examples
 #' 
@@ -38,29 +40,31 @@
 
 
 search_cities_in_states <- function(vec, output) {
-  states <- search_state(vec, "df") 
+  states <- search_state(vec, "dt") 
   
   if (any(states$StatesYN, na.rm = TRUE)) {
     statesY <- states %>%
-      filter(StatesYN == TRUE) %>% 
-      mutate(ID = seq.int(nrow(.))) %>%
+      dt_filter(StatesYN == TRUE) %>% 
+      dt_mutate(ID = seq.int(nrow(.))) %>%
       tidyr::unnest(StatesString) %>%
-      select(ID, OriginalString, StatesString) %>%
-      mutate(OriginalString = str_replace_all(OriginalString, "\n", ", "),
+      dt_select(ID, OriginalString, StatesString) %>%
+      dt_mutate(OriginalString = str_replace_all(OriginalString, "\n", ", "),
              stringsearchbefore = str_extract(OriginalString,
                                               pattern = paste0("(?:\\w+\\W*){3}\\b", StatesString)))
     
     cityregex <- privaR:::cityregex
     cityregex$state <- as.character(cityregex$state)
     cityregex$pattern <- as.character(cityregex$pattern)
-    statesY <- statesY %>% left_join(cityregex, by = c("StatesString" = "state"))
-    cities <-  statesY %>% transmute(ID = ID,
-                                     OriginalString = OriginalString,
+    statesY <- statesY %>% 
+      dt_left_join(cityregex, by = c("StatesString" = "state"))
+    cities <-  statesY %>% dt_mutate(#ID = ID,
+                                     #OriginalString = OriginalString,
                                      StatesString = StatesString,
                                      CitiesYN = str_detect(string = stringsearchbefore, pattern = (pattern)),
-                                     CitiesString = str_extract_all(string = stringsearchbefore, pattern = pattern)) 
+                                     CitiesString = str_extract_all(string = stringsearchbefore, pattern = pattern)) %>%
+      dt_select(ID, OriginalString, StatesString, CitiesYN, CitiesString)
   }
-  else {cities <-  dplyr::tibble(OriginalString = vec, 
+  else {cities <-  data.table(OriginalString = vec, 
                            StatesString = NA,
                            CitiesYN = FALSE,
                            CitiesString = NA) 
@@ -70,7 +74,7 @@ search_cities_in_states <- function(vec, output) {
     return(cities$CitiesYN)
   }
   
-  else if (output == "df") {
+  else if (output == "dt") {
     return(cities)
   }
   

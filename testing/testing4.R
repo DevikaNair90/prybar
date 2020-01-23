@@ -1,13 +1,24 @@
 
-setwd("~/Documents/git_dn90/")
-devtools::install("privaR")
-library(privaR)
+setwd("~/Documents/GitHub/")
+devtools::install("prybar")
+library(prybar)
 
-devtools::document("privaR")
-setwd("~/Documents/git_dn90/privaR/")
+devtools::document("prybar")
+setwd("~/Documents/git_dn90/prybar")
 library(devtools)
 use_data(cityregex, countrycodes, stateabbrevs, streetabbrevs, streetabbrevsusa, 
          internal = TRUE, overwrite = TRUE)
+
+install.packages("changer")
+
+content <- letters
+package.skeleton("privaR", path = tempdir())
+readLines(file.path(tempdir(), "privaR", "DESCRIPTION"))
+library(changer)
+changer(file.path(tempdir(), "privaR"), 
+        new_name = "prybar", check_validity = FALSE, ask = FALSE)
+readLines(file.path(tempdir(), "prybar", "DESCRIPTION"))
+unlink(file.path(tempdir(), "prybar"), recursive = TRUE)
 
 
 ?search_state
@@ -73,4 +84,30 @@ f <- privaR::pii_geo_table(va_personal, writeout = FALSE)
 f <- privaR::search_streets(va_personal$bgtresid, "df")
 g <- privaR::search_streets(va_personal$statename)
 h <- privaR::search_streets(va_personal$cityname, "df")
-h
+
+
+more_tests <- pii_geo_table(fakeaddresses, writeout = FALSE)
+
+losangeles <- read.csv("prybar/los-angeles-listing-of-businesses/listing-of-all-businesses.csv")
+
+nrow(losangeles)
+colnames(losangeles)
+la_test <- losangeles %>% dplyr::transmute(paste(`LOCATION.ACCOUNT..`, 
+                                          BUSINESS.NAME, 
+                                          DBA.NAME, 
+                                          STREET.ADDRESS, 
+                                          CITY, "CA", ZIP.CODE , 
+                                          LOCATION.DESCRIPTION, 
+                                          MAILING.ADDRESS, MAILING.CITY, 
+                                          MAILING.ZIP.CODE, NAICS, PRIMARY.NAICS.DESCRIPTION,  COUNCIL.DISTRICT,  
+                                          LOCATION.START.DATE, LOCATION.END.DATE,  LOCATION, Neighborhood.Councils..Certified.,
+                                          LA.Specific.Plans, Precinct.Boundaries, Council.Districts, Census.Tracts,        
+                                          Zip.Codes, sep = " "))
+
+colnames(la_test) <- c("test")
+
+View(head(la_test))
+
+Sys.time()
+la_test_statetiming <- search_state(la_test, "dt")
+Sys.time()

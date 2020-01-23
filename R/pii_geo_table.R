@@ -6,6 +6,8 @@
 #' @param df A dataframe with (vector-able) variables.
 #' @import stringr
 #' @import dplyr
+#' @import data.table
+#' @import maditr
 #' @suggest generator
 #' @export
 #' @examples
@@ -31,12 +33,12 @@
 pii_geo_table <- function(df, path, writeout) {
   print(Sys.time())
   df_name <- deparse(substitute(df))
-  df <- as.data.frame(df)
-  class_table <- data.frame("Column" = colnames(df)) %>%
-    mutate("Reference" = paste0(df_name, "$", Column))
+  df <- as.data.table(df)
+  class_table <- data.table("Column" = colnames(df)) %>%
+    dt_mutate("Reference" = paste0(df_name, "$", Column))
   
   for (i in 1:ncol(df)) {
-    class_table$class[i] <- class(df[,i])
+    class_table$class[i] <- class(df[[i]])
   }
   
   # numvars <- class_table %>% filter(class %in% c("numeric", "integer", "double")) 
@@ -50,16 +52,16 @@ pii_geo_table <- function(df, path, writeout) {
   # 
   # columnsummary <- data.frame("Column" = colnames(df_numbers))
   
-  df_state <- list(data.frame())
-  df_city <- list(data.frame())
-  df_zipcode <- list(data.frame())
-  df_street <- list(data.frame())
+  df_state <- list(data.table())
+  df_city <- list(data.table())
+  df_zipcode <- list(data.table())
+  df_street <- list(data.table())
   
   # STATES #####################################################################################
   
   for (i in 1:ncol(df)) {
-    var <- as.character(df[,i])
-    df_state[[i]] <- search_state(var, "df")
+    var <- as.character(df[[i]])
+    df_state[[i]] <- search_state(var, "dt")
     class_table$staterisk[i] <- sum(df_state[[i]]$StatesYN, na.rm = TRUE)
   }
   
@@ -74,8 +76,8 @@ pii_geo_table <- function(df, path, writeout) {
   # CITIES #####################################################################################
   
   for (i in 1:ncol(df)) {
-    var <- as.character(df[,i])
-    df_city[[i]] <- search_cities_in_states(var, "df")
+    var <- as.character(df[[i]])
+    df_city[[i]] <- search_cities_in_states(var, "dt")
     class_table$cityrisk[i] <- sum(df_city[[i]]$CitiesYN, na.rm = TRUE)
   }
   
@@ -90,8 +92,8 @@ pii_geo_table <- function(df, path, writeout) {
   # ZIPCODES #####################################################################################
   
   for (i in 1:ncol(df)) {
-    var <- as.character(df[,i])
-    df_zipcode[[i]] <- search_zipcode(var, "df")
+    var <- as.character(df[[i]])
+    df_zipcode[[i]] <- search_zipcode(var, "dt")
     class_table$zipcoderisk[i] <- sum(df_zipcode[[i]]$ZipCodeYN, na.rm = TRUE)
   }
   

@@ -10,10 +10,11 @@
 #' @param vec A vector input whose contents need to be searched for references
 #' to states.
 #' @param output The desired output of function. Defaults to "vector" where T/F 
-#' vector result is returned. The argument "df" will output a table of original 
+#' vector result is returned. The argument "dt" will output a table of original 
 #' vector input, T/F vector result, and the matching substring. 
 #' @import stringr
-#' @import dplyr
+#' @import data.table
+#' @import maditr
 #' @export
 #' @examples
 #' 
@@ -42,15 +43,16 @@ search_state <- function(vec, output) {
                    paste0(nostartingletters, states$Abbreviation, noendingletters, collapse = "|"), 
                    collapse = "|")
   
-  states <- dplyr::tibble(OriginalString = str_replace_all(vec, "\n", ", "),
+  states <- data.table(OriginalString = str_replace_all(vec, "\n", ", ")) %>% 
+                         dt_mutate(
                            StatesYN = stringr::str_detect(string = OriginalString, pattern = patt), 
-                          StatesString = stringr::str_extract_all(string = OriginalString, pattern = patt))
+                          StatesString = stringr::str_extract_all(string = OriginalString, pattern = patt)) 
   
   if (missing(output)||output == "vector") {
     return(states$StatesYN)
   }
   
-  else if (output == "df") {
+  else if (output == "dt") {
     return(states)
   }
   
