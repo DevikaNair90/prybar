@@ -5,7 +5,6 @@
 #'
 #' @param df A dataframe with (vector-able) variables.
 #' @import stringr
-#' @import dplyr
 #' @import data.table
 #' @import maditr
 #' @suggest generator
@@ -33,8 +32,8 @@
 pii_geo_table <- function(df, path, writeout) {
   print(Sys.time())
   df_name <- deparse(substitute(df))
-  df <- as.data.table(df)
-  class_table <- data.table("Column" = colnames(df)) %>%
+  df <- data.table::as.data.table(df)
+  class_table <- data.table::data.table("Column" = colnames(df)) %>%
     dt_mutate("Reference" = paste0(df_name, "$", Column))
   
   for (i in 1:ncol(df)) {

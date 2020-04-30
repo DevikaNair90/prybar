@@ -3,7 +3,8 @@ Package: privaR
 Title: Toolkit for Identifying Hidden PII in Text Data
 Version: 0.0
 Authors@R: c(
-    person("Devika", "Mahoney-Nair", , "devikamahoneynair@gmail.com", c("aut", "cre"), comment = c(ORCID = "0000-0002-7044-9028"))
+    person("Devika", "Mahoney-Nair", , "devikamahoneynair@gmail.com", c("aut", "cre"), comment = c(ORCID = "0000-0002-7044-9028")),
+    person("Aaron", "Schroeder", role = "ctb")
     )
 Description: A toolkit for finding personally identifying information in text data. 
 License: MIT + file LICENSE

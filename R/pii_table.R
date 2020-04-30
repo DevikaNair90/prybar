@@ -5,7 +5,8 @@
 #'
 #' @param df A dataframe with (vector-able) variables.
 #' @import stringr
-#' @import dplyr
+#' @import maditr
+#' @import data.table
 #' @suggest generator
 #' @export
 #' @examples
@@ -29,9 +30,9 @@
 
 pii_table <- function(df, path, writeout) {
   df_name <- deparse(substitute(df))
-  df <- as.data.frame(df)
-  class_table <- data.frame("Column" = colnames(df)) %>%
-    mutate("Reference" = paste0(df_name, "$", Column))
+  df <- data.table::as.data.table(df)
+  class_table <- data.table::data.table("Column" = colnames(df)) %>%
+    maditr::dt_mutate("Reference" = paste0(df_name, "$", Column))
   
   for (i in 1:ncol(df)) {
     class_table$class[i] <- class(df[,i])
@@ -48,33 +49,33 @@ pii_table <- function(df, path, writeout) {
   # 
   # columnsummary <- data.frame("Column" = colnames(df_numbers))
   
-  df_email <- list(data.frame())
-  df_ssn <- list(data.frame())
-  df_dob <- list(data.frame())
-  df_phone <- list(data.frame())
+  dt_email <- list(data.table::data.table())
+  dt_ssn <- list(data.table::data.table())
+  dt_dob <- list(data.table::data.table())
+  dt_phone <- list(data.table::data.table())
   #df_zipcode <- list(data.frame())
   
   for (i in 1:ncol(df)) {
     var <- as.character(df[,i])
-    df_dob[[i]] <- search_DOB(var, "df")
-    df_ssn[[i]] <- search_ssn(var, "df")
-    df_email[[i]] <- search_email(var, "df")
-    df_phone[[i]] <- search_phone(var, "df")
+    dt_dob[[i]] <- search_DOB(var, "dt")
+    dt_ssn[[i]] <- search_ssn(var, "dt")
+    dt_email[[i]] <- search_email(var, "dt")
+    dt_phone[[i]] <- search_phone(var, "dt")
    # df_zipcode[[i]] <- search_zipcode(var, "df")
-    class_table$dobrisk[i] <- sum(search_DOB(var), na.rm = TRUE)
-    class_table$emailrisk[i] <- sum(search_email(var), na.rm = TRUE)
-    class_table$phonerisk[i] <- sum(search_phone(var), na.rm = TRUE)
-    class_table$ssnrisk[i] <- sum(search_ssn(var), na.rm = TRUE)
+    class_table$dobrisk[i] <- sum(dt_dob$DOBYN) #sum(search_DOB(var), na.rm = TRUE)
+    class_table$emailrisk[i] <- sum(dt_email$EmailYN)  #sum(search_email(var), na.rm = TRUE)
+    class_table$phonerisk[i] <- sum(dt_phone$PhoneYN)  #sum(search_phone(var), na.rm = TRUE)
+    class_table$ssnrisk[i] <- sum(dt_ssn$SSNYN)  # sum(search_ssn(var), na.rm = TRUE)
     
   }
   
-  if (missing(writeout)||writeout == TRUE) {
+  if (writeout == TRUE) {
     saveRDS(object = class_table, file = paste0(path, df_name, "_PII_0_Summary_", Sys.Date(), ".RDS")) 
     
-    saveRDS(object = df_dob, file = paste0(path, df_name, "_PII_1_DOB_", Sys.Date(), ".RDS"))
-    saveRDS(object = df_ssn, file = paste0(path, df_name, "_PII_2_SSN_", Sys.Date(), ".RDS"))
-    saveRDS(object = df_email, file = paste0(path, df_name, "_PII_3_EMAIL_", Sys.Date(), ".RDS"))
-    saveRDS(object = df_phone, file = paste0(path, df_name, "_PII_4_PHONE_", Sys.Date(), ".RDS"))
+    saveRDS(object = dt_dob, file = paste0(path, df_name, "_PII_1_DOB_", Sys.Date(), ".RDS"))
+    saveRDS(object = dt_ssn, file = paste0(path, df_name, "_PII_2_SSN_", Sys.Date(), ".RDS"))
+    saveRDS(object = dt_email, file = paste0(path, df_name, "_PII_3_EMAIL_", Sys.Date(), ".RDS"))
+    saveRDS(object = dt_phone, file = paste0(path, df_name, "_PII_4_PHONE_", Sys.Date(), ".RDS"))
   }
   
   print("summary completed")
