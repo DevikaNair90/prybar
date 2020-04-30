@@ -8,6 +8,10 @@ pii_geo_table(df, path, writeout)
 }
 \arguments{
 \item{df}{A dataframe with (vector-able) variables.}
+
+\item{path}{destination for tables to be written out}
+
+\item{writeout}{TRUE/FALSE indicator of whether or not full detailed results to be written out. An individual table will be written out for each column, with PII results for every row of the table.}
 }
 \description{
 This function takes a dataframe and searches each column for presence of 
@@ -27,6 +31,6 @@ Toms River, NJ 08753",
                    "73 Beechwood Dr.
                    La Crosse, WI VA DC 54601")
 
-pii_geo_table(fakeaddresses)
+pii_geo_table(fakeaddresses, writeout= FALSE)
 
 }

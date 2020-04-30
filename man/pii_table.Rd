@@ -8,6 +8,10 @@ pii_table(df, path, writeout)
 }
 \arguments{
 \item{df}{A dataframe with (vector-able) variables.}
+
+\item{path}{destination for tables to be written out}
+
+\item{writeout}{TRUE/FALSE indicator of whether or not full detailed results to be written out. An individual table will be written out for each column, with PII results for every row of the table.}
 }
 \description{
 This function takes a dataframe and searches each column for presence of 
@@ -19,13 +23,12 @@ testcase <- data.frame(name = generator::r_full_names(2),
 snn = generator::r_national_identification_numbers(2), 
 dob = generator::r_date_of_births(2), 
 email = generator::r_email_addresses(2), 
-ip = generator::r_ipv4_addresses(2), 
 phone = generator::r_phone_numbers(2),  
 credit_card = generator::r_credit_card_numbers(2), 
 lat = generator::r_latitudes(2), 
 lon = generator::r_longitudes(2), 
 stringsAsFactors = FALSE)
 
-pii_table(testcase)
+pii_table(testcase, writeout = FALSE)
 
 }

@@ -13,13 +13,6 @@ search_cities_in_states(vec, output)
 to city names}
 
 \item{output}{The desired output of function. Defaults to "vector" where T/F 
-vector result is returned. The argument "df" will output a table of original 
-vector input, T/F vector result, and the matching substring.}
-
-\item{vec}{A vector input whose contents need to be searched for references
-to city names}
-
-\item{output}{The desired output of function. Defaults to "vector" where T/F 
 vector result is returned. The argument "dt" will output a table of original 
 vector input, T/F vector result, and the matching substring.}
 }

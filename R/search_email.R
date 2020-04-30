@@ -10,7 +10,7 @@
 #' @param vec A vector input whose contents need to be searched for references
 #' to emails
 #' @param output The desired output of function. Defaults to "vector" where T/F 
-#' vector result is returned. The argument "df" will output a table of original 
+#' vector result is returned. The argument "dt" will output a table of original 
 #' vector input, T/F vector result, and the matching substring. 
 #' @import stringr
 #' @import maditr
@@ -42,7 +42,7 @@ search_email <- function(vec, output) {
     return(email$EmailYN)
   }
   
-  else if (output == "df") {
+  else if (output == "dt") {
     return(email)
   }
   

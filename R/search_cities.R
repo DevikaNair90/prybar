@@ -18,6 +18,7 @@
 #' @import stringr
 #' @import maditr
 #' @import data.table
+#' @import tidyr
 #' @export
 #' @examples
 #' 

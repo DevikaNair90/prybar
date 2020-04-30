@@ -1,5 +1,5 @@
 Type: Package
-Package: privaR
+Package: prybar
 Title: Toolkit for Identifying Hidden PII in Text Data
 Version: 0.0
 Authors@R: c(
@@ -8,12 +8,14 @@ Authors@R: c(
     )
 Description: A toolkit for finding personally identifying information in text data. 
 License: MIT + file LICENSE
-URL: https://github.com/DevikaNair90/privaR
-BugReports: https://github.com/DevikaNair90/privaR/issues
-Depends: 
-Imports: 
+URL: https://github.com/DevikaNair90/prybar
+BugReports: https://github.com/DevikaNair90/prybar/issues
+Imports: stringr, maditr, data.table, generator, tidyr
 Suggests: 
-LinkingTo: 
+    knitr,
+    rmarkdown
 VignetteBuilder: knitr
 Encoding: UTF-8
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.0
+Depends: 
+    R (>= 2.10)

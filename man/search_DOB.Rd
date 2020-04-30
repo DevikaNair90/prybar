@@ -11,7 +11,7 @@ search_DOB(vec, output)
 to dates (eg. date of birth)}
 
 \item{output}{The desired output of function. Defaults to "vector" where T/F 
-vector result is returned. The argument "df" will output a table of original 
+vector result is returned. The argument "dt" will output a table of original 
 vector input, T/F vector result, and the matching substring.}
 }
 \description{
@@ -36,7 +36,7 @@ lat = generator::r_latitudes(2),
 lon = generator::r_longitudes(2), 
 stringsAsFactors = FALSE)
 
-search_dob(testcase$dob)
+search_DOB(testcase$dob)
 
 
 }

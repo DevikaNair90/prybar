@@ -4,6 +4,8 @@
 #' any text that appears as PII geography: street address, city/states, zipcodes. 
 #'
 #' @param df A dataframe with (vector-able) variables.
+#' @param writeout TRUE/FALSE indicator of whether or not full detailed results to be written out. An individual table will be written out for each column, with PII results for every row of the table. 
+#' @param path destination for tables to be written out
 #' @import stringr
 #' @import data.table
 #' @import maditr
@@ -23,11 +25,11 @@
 #'                    "73 Beechwood Dr.
 #'                    La Crosse, WI VA DC 54601")
 #' 
-#' pii_geo_table(fakeaddresses)
+#' pii_geo_table(fakeaddresses, writeout= FALSE)
 #' 
 # devtools::load_all()
 # devtools::use_package(package = "stringr", type = "import")
-# devtools::use_package(package = "dplyr", type = "import")
+# devtools::use_package(package = "maditr", type = "import")
 
 pii_geo_table <- function(df, path, writeout) {
   print(Sys.time())
