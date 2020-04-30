@@ -39,9 +39,13 @@
 search_zipcode <- function(vec, output) {
   patt <- "\\d{5}(( |.|-)?\\d{4})?"
   zipcode <- data.table(ID = seq.int(length(vec)),
-                        OriginalString = str_replace_all(vec, "\n", ", ")) %>%
-    dt_mutate(ZipCodeYN = stringr::str_detect(string = OriginalString, pattern = patt), 
-              ZipCodeString = stringr::str_extract_all(string = OriginalString, pattern = patt))
+                        OriginalString = gsub(x = vec, pattern =  "\n", replacement = ", ")) 
+  
+  ms <- regmatches(zipcode$OriginalString, 
+                   gregexpr(pattern = patt, zipcode$OriginalString))  
+  zipcode$ZipCodeString <- ms
+  zipcode$ZipCodeYN <- ifelse(lengths(zipcode$ZipCodeString) > 0, TRUE, FALSE)
+  
   
   if (missing(output)||output == "vector") {
     return(zipcode$ZipCodeYN)
