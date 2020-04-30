@@ -13,7 +13,8 @@
 #' vector result is returned. The argument "df" will output a table of original 
 #' vector input, T/F vector result, and the matching substring. 
 #' @import stringr
-#' @import dplyr
+#' @import maditr
+#' @import data.table
 #' @suggest generator
 #' @export
 #' @examples
@@ -33,7 +34,7 @@
 
 search_email <- function(vec, output) {
   patt <- "([^\\s]+)@([^\\s]+)"
-  email <- dplyr::tibble(OriginalString = vec,
+  email <- data.table::data.table(OriginalString = vec,
                        EmailYN = stringr::str_detect(string = vec, pattern = patt), 
                        EmailString = stringr::str_extract_all(string = vec, pattern = patt))
   

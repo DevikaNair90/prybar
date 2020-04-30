@@ -18,7 +18,8 @@
 #' vector result is returned. The argument "df" will output a table of original 
 #' vector input, T/F vector result, and the matching substring. 
 #' @import stringr
-#' @import dplyr
+#' @import maditr
+#' @import data.table
 #' @export
 #' @examples
 #' 
@@ -44,27 +45,29 @@
 # source("R/search_zipcode.R")
 
 search_addresses <- function(vec, output) {
-  cities <- search_cities_in_states(vec, "df")
-  streets <- search_streets(vec, "df") 
-  zipcodes <- search_zipcode(vec, "df")
+  cities <- search_cities_in_states(vec, "dt")
+  streets <- search_streets(vec, "dt") 
+  zipcodes <- search_zipcode(vec, "dt")
   
   if (any(streets$StreetsYN)) {
     addresses <-streets %>% 
-      full_join(cities, by = c("ID", "OriginalString")) %>% 
-      full_join(zipcodes, by = c("ID", "OriginalString")) %>%
-      mutate(AddressYN = ifelse(StreetsYN == TRUE & (CitiesYN == TRUE|ZipCodeYN == TRUE), TRUE, FALSE)) 
+      maditr::dt_full_join(cities, by = c("ID", "OriginalString")) %>% 
+      maditr::dt_full_join(zipcodes, by = c("ID", "OriginalString")) %>%
+      maditr::dt_mutate(AddressYN = ifelse(StreetsYN == TRUE & (CitiesYN == TRUE|ZipCodeYN == TRUE), TRUE, FALSE)) 
   }
   else {
-    addresses <-  dplyr::tibble(OriginalString = vec, 
+    addresses <-  data.table::data.table(OriginalString = vec, 
                              AddressYN = FALSE,
                              AddressString = NA)
   }
   
-  if (missing(output)||output == "vector") {
+  output <- ifelse(missing(output), "vector", output)
+  
+  if (output == "vector") {
     return(addresses$AddressYN)
   }
   
-  else if (output == "df") {
+  else if (output == "dt") {
     return(addresses)
   }
   

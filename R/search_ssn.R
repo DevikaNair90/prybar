@@ -13,7 +13,8 @@
 #' vector result is returned. The argument "df" will output a table of original 
 #' vector input, T/F vector result, and the matching substring. 
 #' @import stringr
-#' @import dplyr
+#' @import maditr
+#' @import data.table
 #' @suggest generator
 #' @export
 #' @examples
@@ -35,11 +36,13 @@
 search_ssn <- function(vec, output) {
   patt <- c("(?<![0-9])[0-9]{3}( |\\.|-)?[0-9]{2}( |\\.|-)?[0-9]{4}(?![0-9])")
   #patt <- paste(patt, collapse = "|")
-  ssn <- dplyr::tibble(OriginalString = vec,
+  ssn <- data.table::data.table(OriginalString = vec,
                          SSNYN = stringr::str_detect(string = vec, pattern = patt), 
                          SSNString = stringr::str_extract_all(string = vec, pattern = patt))
   
-  if (missing(output)||output == "vector") {
+  output <- ifelse(missing(output), "vector", output)
+  
+  if (output == "vector") {
     return(ssn$SSNYN)
   }
   

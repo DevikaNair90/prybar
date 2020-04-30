@@ -16,7 +16,6 @@
 #' vector result is returned. The argument "dt" will output a table of original 
 #' vector input, T/F vector result, and the matching substring. 
 #' @import stringr
-#' @import dplyr
 #' @import data.table
 #' @import maditr
 #' @export
@@ -46,7 +45,7 @@ search_cities_in_states <- function(vec, output) {
     statesY <- states %>%
       dt_filter(StatesYN == TRUE) %>% 
       dt_mutate(ID = seq.int(nrow(.))) %>%
-      tidyr::unnest(StatesString) %>%
+      tidyr::unnest(c("StatesString")) %>%
       dt_select(ID, OriginalString, StatesString) %>%
       dt_mutate(OriginalString = str_replace_all(OriginalString, "\n", ", "),
              stringsearchbefore = str_extract(OriginalString,
@@ -64,13 +63,15 @@ search_cities_in_states <- function(vec, output) {
                                      CitiesString = str_extract_all(string = stringsearchbefore, pattern = pattern)) %>%
       dt_select(ID, OriginalString, StatesString, CitiesYN, CitiesString)
   }
-  else {cities <-  data.table(OriginalString = vec, 
+  else {cities <-  data.table::data.table(OriginalString = vec, 
                            StatesString = NA,
                            CitiesYN = FALSE,
                            CitiesString = NA) 
   }
   
-  if (missing(output)||output == "vector") {
+  output <- ifelse(missing(output), "vector", output)
+  
+  if (output == "vector") {
     return(cities$CitiesYN)
   }
   

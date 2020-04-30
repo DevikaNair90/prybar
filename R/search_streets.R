@@ -15,7 +15,8 @@
 #' vector result is returned. The argument "df" will output a table of original 
 #' vector input, T/F vector result, and the matching substring. 
 #' @import stringr
-#' @import dplyr
+#' @import maditr
+#' @import data.table
 #' @export
 #' @examples
 #' 
@@ -35,7 +36,7 @@
 #' search_streets(fakeaddresses)
 #' 
 
-search_streets2 <- function(vec, output) {
+search_streets <- function(vec, output) {
   # DATASETS
   streetspatt <- privaR:::streetabbrevsusa 
   
@@ -57,12 +58,14 @@ search_streets2 <- function(vec, output) {
   streets$StreetString <- ms
   streets$StreetYN <- ifelse(lengths(streets$StreetString) > 0, TRUE, FALSE)
   
-  if (missing(output)||output == "vector") {
+  output <- ifelse(missing(output), "vector", output)
+  
+  if (output == "vector") {
     return(streets$StreetYN)
   }
   
   
-  else if (output == "df") {
+  else if (output == "dt") {
     return(streets)
   }
   

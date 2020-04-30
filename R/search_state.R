@@ -48,7 +48,9 @@ search_state <- function(vec, output) {
                            StatesYN = stringr::str_detect(string = OriginalString, pattern = patt), 
                           StatesString = stringr::str_extract_all(string = OriginalString, pattern = patt)) 
   
-  if (missing(output)||output == "vector") {
+  output <- ifelse(missing(output), "vector", output)
+  
+  if (output == "vector") {
     return(states$StatesYN)
   }
   

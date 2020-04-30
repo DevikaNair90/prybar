@@ -15,7 +15,8 @@
 #' vector result is returned. The argument "df" will output a table of original 
 #' vector input, T/F vector result, and the matching substring. 
 #' @import stringr
-#' @import dplyr
+#' @import maditr
+#' @import data.table
 #' @suggest generator
 #' @export
 #' @examples
@@ -43,19 +44,19 @@ search_phone <- function(vec, output) {
             "Tel", "Phone", "Cell", "Mobile", "Fax")
   patt <- paste(patt, collapse = "|")
   
-  phone <- as.data.frame(cbind(OriginalString = vec, 
-                               PhoneString =  regmatches(vec , m = gregexpr(vec, pattern = patt )),
-                               PhoneYN = ))
+  # phone <- as.data.frame(cbind(OriginalString = vec, 
+  #                              PhoneString =  regmatches(vec , m = gregexpr(vec, pattern = patt )),
+  #                              PhoneYN = ))
   
-  phone <- dplyr::tibble(OriginalString = vec,
+  phone <- data.table::data.table(OriginalString = vec,
                          PhoneYN = stringr::str_detect(string = vec, pattern = patt), 
-                         PhoneString = stringr::str_extract_all(string = vec, pattern = patt),
-                         PhoneUS = )
+                         PhoneString = stringr::str_extract_all(string = vec, pattern = patt))
   
   areacodes <-read.csv("https://raw.githubusercontent.com/ravisorg/Area-Code-Geolocation-Database/master/us-area-code-cities.csv", header=F)
   
+  output <- ifelse(missing(output), "vector", output)
   
-  if (missing(output)||output == "vector") {
+  if (output == "vector") {
     return(phone$PhoneYN)
   }
   

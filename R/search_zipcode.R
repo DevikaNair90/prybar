@@ -14,7 +14,6 @@
 #' vector result is returned. The argument "df" will output a table of original 
 #' vector input, T/F vector result, and the matching substring. 
 #' @import stringr
-#' @import dplyr
 #' @import data.table
 #' @import maditr
 #' @export
@@ -38,7 +37,7 @@
 
 search_zipcode <- function(vec, output) {
   patt <- "\\d{5}(( |.|-)?\\d{4})?"
-  zipcode <- data.table(ID = seq.int(length(vec)),
+  zipcode <- data.table::data.table(ID = seq.int(length(vec)),
                         OriginalString = gsub(x = vec, pattern =  "\n", replacement = ", ")) 
   
   ms <- regmatches(zipcode$OriginalString, 
@@ -46,8 +45,9 @@ search_zipcode <- function(vec, output) {
   zipcode$ZipCodeString <- ms
   zipcode$ZipCodeYN <- ifelse(lengths(zipcode$ZipCodeString) > 0, TRUE, FALSE)
   
+  output <- ifelse(missing(output), "vector", output)
   
-  if (missing(output)||output == "vector") {
+  if (output == "vector") {
     return(zipcode$ZipCodeYN)
   }
   
