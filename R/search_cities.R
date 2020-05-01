@@ -18,6 +18,7 @@
 #' @import stringr
 #' @import maditr
 #' @import tidyr
+#' @importFrom utils read.csv
 #' @export
 #' @examples
 #' 

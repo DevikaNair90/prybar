@@ -14,7 +14,6 @@
 #' vector input, T/F vector result, and the matching substring. 
 #' @import stringr
 #' @import maditr
-#' @import data.table
 #' @export
 #' @examples
 #' 

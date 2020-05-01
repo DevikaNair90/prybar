@@ -8,6 +8,7 @@
 #' @param path destination for tables to be written out
 #' @import stringr
 #' @import maditr
+#' @importFrom data.table data.table
 #' @suggest generator
 #' @export
 #' @examples
@@ -47,10 +48,10 @@ pii_geo_table <- function(df, path, writeout) {
   # 
   # columnsummary <- data.frame("Column" = colnames(df_numbers))
   
-  df_state <- list(data.table())
-  df_city <- list(data.table())
-  df_zipcode <- list(data.table())
-  df_street <- list(data.table())
+  df_state <- list(maditr::data.table())
+  df_city <- list(maditr::data.table())
+  df_zipcode <- list(maditr::data.table())
+  df_street <- list(maditr::data.table())
   
   # STATES #####################################################################################
   

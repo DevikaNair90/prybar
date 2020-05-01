@@ -10,7 +10,7 @@ Description: A toolkit for finding personally identifying information in text da
 License: MIT + file LICENSE
 URL: https://github.com/DevikaNair90/prybar
 BugReports: https://github.com/DevikaNair90/prybar/issues
-Imports: stringr, maditr, generator, tidyr, data.table
+Imports: stringr, maditr, generator, tidyr, data.table, utils
 Suggests: 
     knitr,
     rmarkdown

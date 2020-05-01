@@ -32,7 +32,7 @@
 pii_table <- function(df, path, writeout) {
   df_name <- deparse(substitute(df))
   df <- maditr::as.data.table(df)
-  class_table <- data.table::data.table("Column" = colnames(df)) %>%
+  class_table <- maditr::data.table("Column" = colnames(df)) %>%
     maditr::dt_mutate("Reference" = paste0(df_name, "$", Column)) %>% 
     maditr::dt_mutate(class = character(length = length(colnames(df))))
   

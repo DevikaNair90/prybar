@@ -17,6 +17,7 @@
 #' vector input, T/F vector result, and the matching substring. 
 #' @import stringr
 #' @import maditr
+#' @importFrom utils read.csv
 #' @export
 #' @examples
 #' 
