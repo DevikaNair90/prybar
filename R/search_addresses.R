@@ -19,7 +19,6 @@
 #' vector input, T/F vector result, and the matching substring. 
 #' @import stringr
 #' @import maditr
-#' @import data.table
 #' @export
 #' @examples
 #' 
@@ -56,7 +55,7 @@ search_addresses <- function(vec, output) {
       maditr::dt_mutate(AddressYN = ifelse(StreetsYN == TRUE & (CitiesYN == TRUE|ZipCodeYN == TRUE), TRUE, FALSE)) 
   }
   else {
-    addresses <-  data.table::data.table(OriginalString = vec, 
+    addresses <-  maditr::data.table(OriginalString = vec, 
                              AddressYN = FALSE,
                              AddressString = NA)
   }

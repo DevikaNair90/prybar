@@ -16,7 +16,6 @@
 #' vector input, T/F vector result, and the matching substring. 
 #' @import stringr
 #' @import maditr
-#' @import data.table
 #' @export
 #' @examples
 #' 
@@ -38,7 +37,7 @@
 
 search_streets <- function(vec, output) {
   # DATASETS
-  streetspatt <- privaR:::streetabbrevsusa 
+  streetspatt <- streetabbrevsusa 
   
   # PATTERNS - numbers, street abbrevaiations and names
   # pattern to match digits
@@ -49,7 +48,7 @@ search_streets <- function(vec, output) {
   threepriorwhitespacespatt <- paste0("(?:\\w+\\W*){3}\\b(", streetspatt, ")", collapse = "|") 
   # pattern to find street addresses
   
-  streets <- data.table::data.table(ID = seq.int(length(vec)),
+  streets <- maditr::data.table(ID = seq.int(length(vec)),
                                     OriginalString = gsub(x = vec, pattern =  "\n", replacement = ", ")) 
   
   ms <- regmatches(streets$OriginalString,

@@ -14,7 +14,6 @@
 #' vector result is returned. The argument "dt" will output a table of original 
 #' vector input, T/F vector result, and the matching substring. 
 #' @import stringr
-#' @import data.table
 #' @import maditr
 #' @export
 #' @examples
@@ -37,7 +36,7 @@
 
 search_zipcode <- function(vec, output) {
   patt <- "\\d{5}(( |.|-)?\\d{4})?"
-  zipcode <- data.table::data.table(ID = seq.int(length(vec)),
+  zipcode <- maditr::data.table(ID = seq.int(length(vec)),
                         OriginalString = gsub(x = vec, pattern =  "\n", replacement = ", ")) 
   
   ms <- regmatches(zipcode$OriginalString, 

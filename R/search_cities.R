@@ -17,7 +17,6 @@
 #' vector input, T/F vector result, and the matching substring. 
 #' @import stringr
 #' @import maditr
-#' @import data.table
 #' @import tidyr
 #' @export
 #' @examples
@@ -35,7 +34,7 @@
 #'                    "73 Beechwood Dr.
 #'                    La Crosse, WI VA DC 54601")
 #' 
-#' search_cities_in_states(testcase)
+#' search_cities_in_states(fakeaddresses)
 #' 
 
 
@@ -59,7 +58,7 @@ search_cities_in_states <- function(vec, output) {
                         CitiesString = str_extract_all(string = stringsearchbefore, pattern = pattern)) %>%
       dt_select(ID, OriginalString, StatesString, CitiesYN, CitiesString)
   }
-  else {cities <-  data.table::data.table(OriginalString = vec, 
+  else {cities <-  maditr::data.table(OriginalString = vec, 
                            StatesString = NA,
                            CitiesYN = FALSE,
                            CitiesString = NA) 

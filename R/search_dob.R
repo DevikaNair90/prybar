@@ -14,7 +14,6 @@
 #' vector input, T/F vector result, and the matching substring. 
 #' @import stringr
 #' @import maditr
-#' @import data.table
 #' @suggest generator
 #' @export
 #' @examples
@@ -76,7 +75,7 @@ search_DOB <- function(vec, output) {
                 writtenpatt,
                 sep = "|")
   
-  dob <- data.table::data.table(OriginalString = vec,
+  dob <- maditr::data.table(OriginalString = vec,
                        DOBYN = stringr::str_detect(string = vec, pattern = patt), 
                        DOBStsring = stringr::str_extract_all(string = vec, pattern = patt))
   

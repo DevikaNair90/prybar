@@ -16,7 +16,6 @@
 #' vector result is returned. The argument "dt" will output a table of original 
 #' vector input, T/F vector result, and the matching substring. 
 #' @import stringr
-#' @import data.table
 #' @import maditr
 #' @export
 #' @examples
@@ -51,7 +50,7 @@ search_cities_in_states <- function(vec, output) {
              stringsearchbefore = str_extract(OriginalString,
                                               pattern = paste0("(?:\\w+\\W*){3}\\b", StatesString)))
     
-    cityregex <- privaR:::cityregex
+    cityregex <- cityregex
     cityregex$state <- as.character(cityregex$state)
     cityregex$pattern <- as.character(cityregex$pattern)
     statesY <- statesY %>% 
@@ -63,7 +62,7 @@ search_cities_in_states <- function(vec, output) {
                                      CitiesString = str_extract_all(string = stringsearchbefore, pattern = pattern)) %>%
       dt_select(ID, OriginalString, StatesString, CitiesYN, CitiesString)
   }
-  else {cities <-  data.table::data.table(OriginalString = vec, 
+  else {cities <-  maditr::data.table(OriginalString = vec, 
                            StatesString = NA,
                            CitiesYN = FALSE,
                            CitiesString = NA) 

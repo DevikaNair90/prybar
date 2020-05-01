@@ -16,7 +16,6 @@
 #' vector input, T/F vector result, and the matching substring. 
 #' @import stringr
 #' @import maditr
-#' @import data.table
 #' @suggest generator
 #' @export
 #' @examples
@@ -48,7 +47,7 @@ search_phone <- function(vec, output) {
   #                              PhoneString =  regmatches(vec , m = gregexpr(vec, pattern = patt )),
   #                              PhoneYN = ))
   
-  phone <- data.table::data.table(OriginalString = vec,
+  phone <- maditr::data.table(OriginalString = vec,
                          PhoneYN = stringr::str_detect(string = vec, pattern = patt), 
                          PhoneString = stringr::str_extract_all(string = vec, pattern = patt))
   

@@ -13,8 +13,8 @@
 #' vector result is returned. The argument "dt" will output a table of original 
 #' vector input, T/F vector result, and the matching substring. 
 #' @import stringr
-#' @import data.table
 #' @import maditr
+#' @import data.table
 #' @export
 #' @examples
 #' 
@@ -36,14 +36,14 @@
 
 
 search_state <- function(vec, output) {
-  states <- privaR:::stateabbrevs
+  states <- stateabbrevs
   nostartingletters <- "(?<![:alpha:])"
   noendingletters <-  "(?![:alpha:])"
-  patt <- paste0(paste0(nostartingletters, states$State, noendingletters, collapse = "|"),
+  patt <- paste0(paste0(nostartingletters, states$State, noendingletters, collapse = "|"), "|",
                    paste0(nostartingletters, states$Abbreviation, noendingletters, collapse = "|"), 
                    collapse = "|")
   
-  states <- data.table::data.table(OriginalString = str_replace_all(vec, "\n", ", "))  %>% 
+  states <- maditr::data.table(OriginalString = str_replace_all(vec, "\n", ", "))  %>% 
                          maditr::dt_mutate(
                            StatesYN = stringr::str_detect(string = OriginalString, pattern = patt), 
                           StatesString = stringr::str_extract_all(string = OriginalString, pattern = patt)) 

@@ -8,7 +8,6 @@
 #' @param path destination for tables to be written out
 #' @import stringr
 #' @import maditr
-#' @import data.table
 #' @suggest generator
 #' @export
 #' @examples
@@ -32,7 +31,7 @@
 
 pii_table <- function(df, path, writeout) {
   df_name <- deparse(substitute(df))
-  df <- data.table::as.data.table(df)
+  df <- maditr::as.data.table(df)
   class_table <- data.table::data.table("Column" = colnames(df)) %>%
     maditr::dt_mutate("Reference" = paste0(df_name, "$", Column)) %>% 
     maditr::dt_mutate(class = character(length = length(colnames(df))))

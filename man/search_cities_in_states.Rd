@@ -53,7 +53,7 @@ Toms River, NJ 08753",
                    "73 Beechwood Dr.
                    La Crosse, WI VA DC 54601")
 
-search_cities_in_states(testcase)
+search_cities_in_states(fakeaddresses)
 
 
 fakeaddresses <- c("820 Nut Swamp Ave.

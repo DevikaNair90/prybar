@@ -18,19 +18,13 @@ This function takes a dataframe and searches each column for presence of
 any text that appears as PII geography: street address, city/states, zipcodes.
 }
 \examples{
-fakeaddresses <- c("820 Nut Swamp Ave.
-Toms River, NJ 08753",
-                   "982 Clay Street
-                   Lenoir, NC 28645",
-                   "4 NW. Mayfield Rd.
-                   Springfield Gardens, NY 11413",
-                   "20 Elmwood Street
-                   Raleigh, NC 27603",
-                   "196 E. Green Lake Road
-                   Birmingham, AL 35209",
-                   "73 Beechwood Dr.
-                   La Crosse, WI VA DC 54601")
+fakeaddresses_df <- data.frame(Addresses =  c("820 Nut Swamp Ave. Toms River, NJ 08753",
+                                              "982 Clay Street Lenoir, NC 28645",
+                                            "4 NW. Mayfield Rd. Springfield Gardens, NY 11413",
+                                          "20 Elmwood Street Raleigh, NC 27603",
+                                              "196 E. Green Lake Road Birmingham, AL 35209",
+                                            "73 Beechwood Dr. La Crosse, WI VA DC 54601") )
 
-pii_geo_table(fakeaddresses, writeout= FALSE)
+pii_geo_table(fakeaddresses_df, writeout= FALSE)
 
 }

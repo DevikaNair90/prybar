@@ -14,7 +14,6 @@
 #' vector input, T/F vector result, and the matching substring. 
 #' @import stringr
 #' @import maditr
-#' @import data.table
 #' @suggest generator
 #' @export
 #' @examples
@@ -34,7 +33,7 @@
 
 search_email <- function(vec, output) {
   patt <- "([^\\s]+)@([^\\s]+)"
-  email <- data.table::data.table(OriginalString = vec,
+  email <- maditr::data.table(OriginalString = vec,
                        EmailYN = stringr::str_detect(string = vec, pattern = patt), 
                        EmailString = stringr::str_extract_all(string = vec, pattern = patt))
   

@@ -7,25 +7,18 @@
 #' @param writeout TRUE/FALSE indicator of whether or not full detailed results to be written out. An individual table will be written out for each column, with PII results for every row of the table. 
 #' @param path destination for tables to be written out
 #' @import stringr
-#' @import data.table
 #' @import maditr
 #' @suggest generator
 #' @export
 #' @examples
-#' fakeaddresses <- c("820 Nut Swamp Ave.
-#' Toms River, NJ 08753",
-#'                    "982 Clay Street
-#'                    Lenoir, NC 28645",
-#'                    "4 NW. Mayfield Rd.
-#'                    Springfield Gardens, NY 11413",
-#'                    "20 Elmwood Street
-#'                    Raleigh, NC 27603",
-#'                    "196 E. Green Lake Road
-#'                    Birmingham, AL 35209",
-#'                    "73 Beechwood Dr.
-#'                    La Crosse, WI VA DC 54601")
+#' fakeaddresses_df <- data.frame(Addresses =  c("820 Nut Swamp Ave. Toms River, NJ 08753",
+#'                                               "982 Clay Street Lenoir, NC 28645",
+#'                                             "4 NW. Mayfield Rd. Springfield Gardens, NY 11413",
+#'                                           "20 Elmwood Street Raleigh, NC 27603",
+#'                                               "196 E. Green Lake Road Birmingham, AL 35209",
+#'                                             "73 Beechwood Dr. La Crosse, WI VA DC 54601") )
 #' 
-#' pii_geo_table(fakeaddresses, writeout= FALSE)
+#' pii_geo_table(fakeaddresses_df, writeout= FALSE)
 #' 
 # devtools::load_all()
 # devtools::use_package(package = "stringr", type = "import")
@@ -34,9 +27,10 @@
 pii_geo_table <- function(df, path, writeout) {
   print(Sys.time())
   df_name <- deparse(substitute(df))
-  df <- data.table::as.data.table(df)
-  class_table <- data.table::data.table("Column" = colnames(df)) %>%
-    dt_mutate("Reference" = paste0(df_name, "$", Column))
+  df <- maditr::as.data.table(df)
+  class_table <- maditr::data.table("Column" = colnames(df)) %>%
+    dt_mutate(Reference = paste0(df_name, "$", Column), 
+              class = character(length = length(colnames(df))))
   
   for (i in 1:ncol(df)) {
     class_table$class[i] <- class(df[[i]])
